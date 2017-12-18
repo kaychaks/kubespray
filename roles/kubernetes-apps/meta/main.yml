@@ -33,3 +33,9 @@ dependencies:
     tags:
       - apps
       - istio
+
+  - role: kubernetes-apps/rook
+    when: rook_enabled
+    tags:
+      - apps
+      - rook

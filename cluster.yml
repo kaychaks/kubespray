@@ -114,3 +114,4 @@
   roles:
     - { role: kubespray-defaults}
     - { role: kubernetes-apps, tags: apps }
+  environment: "{{proxy_env}}"

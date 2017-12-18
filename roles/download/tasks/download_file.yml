@@ -21,6 +21,7 @@
     sha256sum: "{{download.sha256 | default(omit)}}"
     owner: "{{ download.owner|default(omit) }}"
     mode: "{{ download.mode|default(omit) }}"
+    use_proxy: "{{ use_proxy_in_download | default(no) }}"
   register: get_url_result
   until: "'OK' in get_url_result.msg or 'file already exists' in get_url_result.msg"
   retries: 4

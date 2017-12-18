@@ -1,0 +1,21 @@
+# Choose network plugin (calico, contiv, weave or flannel)
+# Can also be set to 'cloud', which lets the cloud provider setup appropriate routing
+kube_network_plugin: weave
+
+# weave's network password for encryption
+# if null then no network encryption
+# you can use --extra-vars to pass the password in command line
+weave_password: cognizant-dev-services
+
+# Helm deployment
+helm_enabled: true
+
+# relevant configurations
+kubelet_fail_swap_on: false
+docker_dns_servers_strict: no
+
+# using proxy for file downloads
+use_proxy_in_download : true
+
+# rook deployment
+rook_enabled: true

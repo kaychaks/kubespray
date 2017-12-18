@@ -1,3 +1,10 @@
+
+**Please check the [Customizations](docs/customizations.md) page for details on all changes done to Kubespray for our cluster setup**
+
+Following text is from the original Kubespray project
+
+---
+
 ![Kubernetes Logo](https://s28.postimg.org/lf3q4ocpp/k8s.png)
 
 ## Deploy a production ready kubernetes cluster

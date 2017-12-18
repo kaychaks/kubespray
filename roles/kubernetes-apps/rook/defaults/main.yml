@@ -1,0 +1,13 @@
+---
+rook_chart_channel: master
+rook_operator_namespace: rook-system
+rook_chart_source_url: https://charts.rook.io
+rook_operator_helm_chart_version: v0.6.0-86.g1c27ae5
+
+# rook_helm_values:
+#   - resources.limits.cpu=100m
+#   - resources.limits.memory=128Mi
+#   - resources.requests.cpu=100m
+#   - resources.requests.memory=128Mi
+#   - rbacEnable=true
+...

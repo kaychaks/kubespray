@@ -1,0 +1,33 @@
+---
+- name: Rook | Ensure Rook helm repo is not there
+  shell: "helm repo list | grep -ic rook-{{ rook_chart_channel }}"
+  register: norookrepo
+  changed_when: false
+  failed_when: (norookrepo.stdout | int) > 0
+  ignore_errors: true
+
+- name: Rook | Add Rook helm repo
+  shell: "helm repo add rook-{{ rook_chart_channel }} {{ rook_chart_source_url }}/{{ rook_chart_channel }}"
+  when: norookrepo | succeeded
+
+- name: Rook | Update Rook helm repo
+  shell: "helm repo update"
+
+- name: Rook | Ensure rook-operator release is not there
+  shell: "helm list --namespace {{rook_operator_namespace}} | grep -ic deployed"
+  register: norookoperatorrelease
+  changed_when: false
+  failed_when: (norookoperatorrelease.stdout | int) > 0
+  ignore_errors: true
+
+- name: Rook | Install rook operator Helm chart
+  shell: "helm install rook-{{ rook_chart_channel }}/rook --version {{ rook_operator_helm_chart_version }} --namespace {{ rook_operator_namespace }}{% if rook_helm_values is defined %} --set {{ rook_helm_values | join(',') }} {% endif %}"
+  when: norookoperatorrelease | succeeded
+
+- name: Rook | Ensuring rook operator is running
+  shell: >
+    kubectl get po -n "{{ rook_operator_namespace }}" -o jsonpath='{range .items[*]}{.metadata.name} : {.status.phase}{"\n"}{end}' | grep -vic Running
+  register: rook_operator_deployed
+  changed_when: false
+  failed_when: (rook_operator_deployed.stdout | int) > 0
+  retries: 10
