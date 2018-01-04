@@ -83,8 +83,8 @@ weave_mode_seed: false
 # To reset values :
 # weave_seed: uninitialized
 # weave_peers: uninitialized
-weave_seed: uninitialized
-weave_peers: uninitialized
+weave_seed: 00:50:56:b1:49:ce,00:50:56:b1:6f:ed,00:50:56:b1:40:67,00:50:56:b1:11:29,00:50:56:b1:03:1b,00:50:56:b1:02:7a,00:50:56:b1:0b:ad,00:50:56:b1:2e:6a
+weave_peers: 10.154.194.180 10.154.194.181 10.154.194.183 10.154.198.44 10.154.198.25 10.154.194.202 10.154.195.62 10.223.99.88
 
 # Enable kubernetes network policies
 enable_network_policy: false

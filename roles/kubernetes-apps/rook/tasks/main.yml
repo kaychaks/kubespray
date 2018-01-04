@@ -31,3 +31,4 @@
   changed_when: false
   failed_when: (rook_operator_deployed.stdout | int) > 0
   retries: 10
+  ignore_errors: true

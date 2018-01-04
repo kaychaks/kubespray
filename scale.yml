@@ -14,7 +14,7 @@
   roles:
     - { role: kubespray-defaults}
     - { role: bootstrap-os, tags: bootstrap-os}
-  environment: "{{proxy_env}}"
+  # environment: "{{proxy_env}}"
 
 ##We still have to gather facts about our masters and etcd nodes
 - hosts: k8s-cluster:etcd:calico-rr
@@ -22,7 +22,7 @@
   vars:
     ansible_ssh_pipelining: true
   gather_facts: true
-  environment: "{{proxy_env}}"
+  # environment: "{{proxy_env}}"
 
 ##Target only workers to get kubelet installed and checking in on any new nodes
 - hosts: kube-node

@@ -3,9 +3,11 @@ bootstrap_os: ubuntu
 
 ## External LB example config
 apiserver_loadbalancer_domain_name: "{{vault_loadbalancer.domain_name}}"
-#loadbalancer_apiserver:
-address: {{vault_loadbalancer.address}}
-port: 8383
+loadbalancer_apiserver:
+  address: "{{vault_loadbalancer.address}}"
+  port: 8383
+
+loadbalancer_apiserver_localhost: false
 
 ## Uncomment to enable experimental kubeadm deployment mode
 kubeadm_enabled: true
@@ -14,5 +16,11 @@ kubeadm_enabled: true
 #kubeadm_token: "{{ kubeadm_token_first }}.{{ kubeadm_token_second }}"
 #
 ## Set these proxy values in order to update package manager and docker daemon to use proxies
-http_proxy: "{{vault_nodes.http_proxy}}"
-https_proxy: "{{vault_nodes.https_proxy}}"
+http_proxy: "{{ vault_nodes.http_proxy }}"
+https_proxy: "{{ vault_nodes.https_proxy }}"
+
+#Directory where etcd data stored
+etcd_data_dir: /var/lib/etcd
+
+# Directory where the binaries will be installed
+bin_dir: /usr/local/bin
