@@ -72,7 +72,11 @@
 
 - name: flush iptables
   iptables:
+    table: "{{ item }}"
     flush: yes
+  with_items:
+    - filter
+    - nat
   when: flush_iptables|bool
   tags:
     - iptables
@@ -182,16 +186,16 @@
   tags:
     - flannel
 
-# - name: reset | Restart network
-#   service:
-#     name: >-
-#       {% if ansible_os_family == "RedHat" -%}
-#       network
-#       {%- elif ansible_os_family == "Debian" -%}
-#       networking
-#       {%- endif %}
-#     state: restarted
-#   when: ansible_os_family not in ["CoreOS", "Container Linux by CoreOS"]
-#   tags:
-#     - services
-#     - network
+- name: reset | Restart network
+  service:
+    name: >-
+      {% if ansible_os_family == "RedHat" -%}
+      network
+      {%- elif ansible_os_family == "Debian" -%}
+      networking
+      {%- endif %}
+    state: restarted
+  when: ansible_os_family not in ["CoreOS", "Container Linux by CoreOS"] and reset_restart_network
+  tags:
+    - services
+    - network

@@ -8,9 +8,6 @@ kube_script_dir: "{{ bin_dir }}/kubernetes-scripts"
 kube_manifest_dir: "{{ kube_config_dir }}/manifests"
 system_namespace: kube-system
 
-# Logging directory (sysvinit systems)
-kube_log_dir: "/var/log/kubernetes"
-
 # This is where all the cert scripts and certs will be located
 kube_cert_dir: "{{ kube_config_dir }}/ssl"
 
@@ -23,7 +20,7 @@ kube_users_dir: "{{ kube_config_dir }}/users"
 kube_api_anonymous_auth: false
 
 ## Change this to use another Kubernetes version, e.g. a current beta release
-kube_version: v1.9.0
+kube_version: v1.9.2
 
 # Where the binaries will be downloaded.
 # Note: ensure that you've enough disk space (about 1G)
@@ -40,7 +37,7 @@ kube_log_level: 2
 
 # Users to create for basic auth in Kubernetes API via HTTP
 # Optionally add groups for user
-kube_api_pwd: "{{ lookup('password', 'credentials/kube_user length=15 chars=ascii_letters,digits') }}"
+kube_api_pwd: "{{ lookup('password', inventory_dir + '/credentials/kube_user length=15 chars=ascii_letters,digits') }}"
 kube_users:
   kube:
     pass: "{{kube_api_pwd}}"
@@ -84,6 +81,9 @@ weave_mode_seed: true
 weave_seed: 00:50:56:b1:49:ce,00:50:56:b1:6f:ed,00:50:56:b1:40:67,00:50:56:b1:11:29,00:50:56:b1:03:1b,00:50:56:b1:02:7a,00:50:56:b1:0b:ad,00:50:56:b1:2e:6a,00:50:56:b1:79:6f,00:50:56:b1:57:c6,00:50:56:b1:3d:45
 weave_peers: 10.154.194.180 10.154.194.181 10.154.194.183 10.154.198.44 10.154.198.25 10.154.194.202 10.154.195.62 10.223.99.88 10.223.99.116 10.223.97.42 10.154.195.56
 
+# Set the MTU of Weave (default 1376, Jumbo Frames: 8916)
+weave_mtu: 1376
+
 # Enable kubernetes network policies
 enable_network_policy: false
 
@@ -104,6 +104,12 @@ kube_network_node_prefix: 24
 kube_apiserver_ip: "{{ kube_service_addresses|ipaddr('net')|ipaddr(1)|ipaddr('address') }}"
 kube_apiserver_port: 6443 # (https)
 kube_apiserver_insecure_port: 8080 # (http)
+# Set to 0 to disable insecure port - Requires RBAC in authorization_modes and kube_api_anonymous_auth: true
+#kube_apiserver_insecure_port: 0 # (disabled)
+
+# Kube-proxy proxyMode configuration.
+# Can be ipvs, iptables
+kube_proxy_mode: iptables 
 
 # DNS configuration.
 # Kubernetes cluster name, also will be used as DNS domain
@@ -157,8 +163,25 @@ helm_enabled: true
 # Istio deployment
 istio_enabled: false
 
+# Registry deployment
+registry_enabled: false
+
 # Local volume provisioner deployment
+# deprecated will be removed
 local_volumes_enabled: false
+local_volume_provisioner_enabled: "{{ local_volumes_enabled }}"
+
+# CephFS provisioner deployment
+cephfs_provisioner_enabled: false
+# cephfs_provisioner_namespace: "{{ system_namespace }}"
+# cephfs_provisioner_cluster: ceph
+# cephfs_provisioner_monitors:
+#   - 172.24.0.1:6789
+#   - 172.24.0.2:6789
+#   - 172.24.0.3:6789
+# cephfs_provisioner_admin_id: admin
+# cephfs_provisioner_secret: secret
+# cephfs_provisioner_storage_class: cephfs
 
 # Add Persistent Volumes Storage Class for corresponding cloud provider ( OpenStack is only supported now )
 persistent_volumes_enabled: false
@@ -184,6 +207,11 @@ kubeconfig_localhost: true
 ## That can be useful for example to setup a keepalived virtual IP
 # supplementary_addresses_in_ssl_keys: [10.0.0.1, 10.0.0.2, 10.0.0.3]
 
+
+## Running on top of openstack vms with cinder enabled may lead to unschedulable pods due to NoVolumeZoneConflict restriction in kube-scheduler.
+## See https://github.com/kubernetes-incubator/kubespray/issues/2141
+## Set this variable to true to get rid of this issue
+volume_cross_zone_attachment: false
 
 # relevant configurations
 kubelet_fail_swap_on: false
