@@ -182,16 +182,16 @@
   tags:
     - flannel
 
-- name: reset | Restart network
-  service:
-    name: >-
-      {% if ansible_os_family == "RedHat" -%}
-      network
-      {%- elif ansible_os_family == "Debian" -%}
-      networking
-      {%- endif %}
-    state: restarted
-  when: ansible_os_family not in ["CoreOS", "Container Linux by CoreOS"]
-  tags:
-    - services
-    - network
+# - name: reset | Restart network
+#   service:
+#     name: >-
+#       {% if ansible_os_family == "RedHat" -%}
+#       network
+#       {%- elif ansible_os_family == "Debian" -%}
+#       networking
+#       {%- endif %}
+#     state: restarted
+#   when: ansible_os_family not in ["CoreOS", "Container Linux by CoreOS"]
+#   tags:
+#     - services
+#     - network

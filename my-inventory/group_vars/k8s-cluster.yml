@@ -23,7 +23,7 @@ kube_users_dir: "{{ kube_config_dir }}/users"
 kube_api_anonymous_auth: false
 
 ## Change this to use another Kubernetes version, e.g. a current beta release
-kube_version: v1.8.4
+kube_version: v1.9.0
 
 # Where the binaries will be downloaded.
 # Note: ensure that you've enough disk space (about 1G)
@@ -81,21 +81,19 @@ weave_mode_seed: true
 
 # This two variable are automatically changed by the weave's role, do not manually change these values
 # To reset values :
-# weave_seed: uninitialized
-# weave_peers: uninitialized
-weave_seed: uninitialized
-weave_peers: uninitialized
+weave_seed: 00:50:56:b1:49:ce,00:50:56:b1:6f:ed,00:50:56:b1:40:67,00:50:56:b1:11:29,00:50:56:b1:03:1b,00:50:56:b1:02:7a,00:50:56:b1:0b:ad,00:50:56:b1:2e:6a,00:50:56:b1:79:6f,00:50:56:b1:57:c6,00:50:56:b1:3d:45
+weave_peers: 10.154.194.180 10.154.194.181 10.154.194.183 10.154.198.44 10.154.198.25 10.154.194.202 10.154.195.62 10.223.99.88 10.223.99.116 10.223.97.42 10.154.195.56
 
 # Enable kubernetes network policies
 enable_network_policy: false
 
 # Kubernetes internal network for services, unused block of space.
-kube_service_addresses: 10.233.0.0/18
+kube_service_addresses: 10.232.0.0/18
 
 # internal network. When used, it will assign IP
 # addresses from this range to individual pods.
 # This network must be unused in your network infrastructure!
-kube_pods_subnet: 10.233.64.0/18
+kube_pods_subnet: 10.232.64.0/18
 
 # internal network node size allocation (optional). This is the size allocated
 # to each node on your network.  With these defaults you should have
@@ -109,11 +107,14 @@ kube_apiserver_insecure_port: 8080 # (http)
 
 # DNS configuration.
 # Kubernetes cluster name, also will be used as DNS domain
-cluster_name: cds.local
+cluster_name: cdsprim.local
 # Subdomains of DNS domain to be resolved via /etc/resolv.conf for hostnet pods
 ndots: 2
-# Can be dnsmasq_kubedns, kubedns or none
+# Can be dnsmasq_kubedns, kubedns, manual or none
 dns_mode: kubedns
+# Set manual server if using a custom cluster DNS server
+#manual_dns_server: 10.x.x.x
+
 # Can be docker_dns, host_resolvconf or none
 resolvconf_mode: docker_dns
 # Deploy netchecker app to verify DNS resolve as an HTTP service
@@ -159,6 +160,9 @@ istio_enabled: false
 # Local volume provisioner deployment
 local_volumes_enabled: false
 
+# Add Persistent Volumes Storage Class for corresponding cloud provider ( OpenStack is only supported now )
+persistent_volumes_enabled: false
+
 # Make a copy of kubeconfig on the host that runs Ansible in GITDIR/artifacts
 kubeconfig_localhost: true
 # Download kubectl onto the host that runs Ansible in GITDIR/artifacts
@@ -173,20 +177,20 @@ kubeconfig_localhost: true
 # kubelet_cgroups_per_qos: true
 
 # A comma separated list of levels of node allocatable enforcement to be enforced by kubelet.
-# Acceptible options are 'pods', 'system-reserved', 'kube-reserved' and ''. Default is "".
+# Acceptable options are 'pods', 'system-reserved', 'kube-reserved' and ''. Default is "".
 # kubelet_enforce_node_allocatable: pods
 
 ## Supplementary addresses that can be added in kubernetes ssl keys.
-## That can be usefull for example to setup a keepalived virtual IP
+## That can be useful for example to setup a keepalived virtual IP
 # supplementary_addresses_in_ssl_keys: [10.0.0.1, 10.0.0.2, 10.0.0.3]
 
 
 # relevant configurations
 kubelet_fail_swap_on: false
-docker_dns_servers_strict: no
+#docker_dns_servers_strict: no
 
 # using proxy for file downloads
 use_proxy_in_download : true
 
 # rook deployment
-rook_enabled: true
+rook_enabled: false
