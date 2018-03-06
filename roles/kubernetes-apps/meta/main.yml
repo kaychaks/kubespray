@@ -60,3 +60,9 @@ dependencies:
     tags:
       - apps
       - persistent_volumes
+
+
+  - role: kubernetes-apps/label_hostname
+    when: do_label_hostname
+    tags:
+      - label_hostname

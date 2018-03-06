@@ -1,0 +1,6 @@
+---
+- name: Add additional label to the hostnames
+  shell: "kubectl label nodes {{item.key}} cds/hostname={{item.value}} --overwrite"
+  with_dict: "{{ label_hostnames }}"
+  when: do_label_hostname | default(false)
+...

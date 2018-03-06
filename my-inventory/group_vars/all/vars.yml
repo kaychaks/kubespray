@@ -129,3 +129,17 @@ docker_dns_servers_strict: false
 
 # The read-only port for the Kubelet to serve on with no authentication/authorization. Uncomment to enable.
 # kube_read_only_port: 10255
+
+do_label_hostname: true
+label_hostnames:
+   ctsc01029721901: node1
+   ctsc01029722401: node2
+   ctsc01029723101: node3
+   ctsc01029725101: node4
+   ctsc01029725401: node5
+   ctsc01029730401: node6
+   ctsc01067708301: node8
+   ctsc01067732001: node9
+   ctsc01067709301: node10
+   ctsc01067709801: node11
+   ctsc01067720001: node12
