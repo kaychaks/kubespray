@@ -4,6 +4,7 @@ etcd_cluster_setup: true
 
 etcd_backup_prefix: "/var/backups"
 etcd_data_dir: "/var/lib/etcd"
+etcd_events_data_dir: "/var/lib/etcd-events"
 
 etcd_config_dir: /etc/ssl/etcd
 etcd_cert_dir: "{{ etcd_config_dir }}/ssl"
@@ -32,7 +33,7 @@ etcd_memory_limit: "{% if ansible_memtotal_mb < 4096 %}512M{% else %}0{% endif %
 
 etcd_blkio_weight: 1000
 
-etcd_node_cert_hosts: "{{ groups['k8s-cluster'] | union(groups.get('calico-rr', [])) }}"
+etcd_node_cert_hosts: "{{ groups['k8s-cluster'] | union(groups.get('calico-rr', [])) | union(groups.get('vault', [])) }}"
 
 etcd_compaction_retention: "8"
 
